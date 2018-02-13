@@ -1,3 +1,5 @@
+#require 'Awesome_Print'
+
 class Picture ()
   def initialize ()
     @picture = '
@@ -55,9 +57,12 @@ def compare_letter(user_letter,word,rose_pic,array_underlines)
   # check if user character exitsd in word
   word_index = []
   count_letter_existance = 0
-  word.split_word.each do |letter|
+
+#  ap word.split_word
+
+  word.split_word.each_with_index{|letter,index|
     if user_letter == letter
-      array_underlines[word.split_word.index(user_letter)] = user_letter
+      array_underlines[index] = user_letter
     elsif !word.split_word.include?(user_letter)
       count_letter_existance+=1
     end
@@ -65,11 +70,18 @@ def compare_letter(user_letter,word,rose_pic,array_underlines)
     if count_letter_existance == word.split_word.length
       puts "Wrong guess!"
       rose_pic.delete
-    end
 
+    end
+}
+  #e
+  display_word = ""
+  array_underlines.each do |index|
+    display_word+= " #{index}"
   end
 
-  return array_underlines
+  return display_word
+
+
 
 
   #### FIRST DRAFT of Compare_letter Function! #####
@@ -88,7 +100,6 @@ def menu()
   random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
   rand_word = Word.new(random_words.sample)
   @a_pic = Picture.new()
-  #print "#{rand_word.a_word}"
   @a_pic.roses
   @a_pic.flower_pot
 
@@ -100,15 +111,12 @@ def menu()
     print i
   end
 
-  puts "\n\nGuess the word we have hinted!"
-  print "\nEnter a letter: "
-  user_letter = gets.chomp
+  # puts "\n\nGuess the word we have hinted!"
+  # print "\nEnter a letter: "
+  # user_letter = gets.chomp
   ## replace the array of underline in compare
 
   while @a_pic.rose_reader.length > 0
-    @a_pic.roses
-    @a_pic.flower_pot
-
     # blank_array = []
     # rand_word.split('').length.times do
     #   blank_array << "_"
@@ -120,11 +128,12 @@ def menu()
     # end
     # puts "\n\nGuess the word we have hinted above!"
     print "\nEnter a letter: "
-    print "#{rand_word}"
+    puts "#{rand_word.a_word}"
     user_letter = gets.chomp
-    print compare_letter(user_letter,rand_word,@a_pic,blank_array)
-
-
+    array_underlines = compare_letter(user_letter,rand_word,@a_pic,blank_array)
+    @a_pic.roses
+    @a_pic.flower_pot
+    puts array_underlines
     #end of while loop - array of roses
 
   end
