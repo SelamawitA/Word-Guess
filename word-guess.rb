@@ -102,13 +102,13 @@ def menu()
   @a_pic = Picture.new()
   @a_pic.roses
   @a_pic.flower_pot
-
+  user_guesses = {}
   blank_array = []
   rand_word.split_word.length.times do
     blank_array << "_"
   end
   blank_array.each do |i|
-    print i
+    print " #{i}"
   end
 
   # puts "\n\nGuess the word we have hinted!"
@@ -117,26 +117,22 @@ def menu()
   ## replace the array of underline in compare
 
   while @a_pic.rose_reader.length > 0
-    # blank_array = []
-    # rand_word.split('').length.times do
-    #   blank_array << "_"
-    # end
-    # puts rand_word
-    ## put the picture here
-    # blank_array.each do |i|
-    #   print i
-    # end
-    # puts "\n\nGuess the word we have hinted above!"
-    print "\nEnter a letter: "
     puts "#{rand_word.a_word}"
-    user_letter = gets.chomp
+    print "\nEnter a letter: "
+    user_letter = gets.chomp.downcase
+    while user_guesses[user_letter]!= nil
+      puts "You've already guessed that! Guess again."
+      user_letter = gets.chomp.downcase
+    end
+    user_guesses[user_letter] = 'a_guess'
     array_underlines = compare_letter(user_letter,rand_word,@a_pic,blank_array)
     @a_pic.roses
     @a_pic.flower_pot
     puts array_underlines
     #end of while loop - array of roses
-
   end
+  puts "Sorry no more attempts, you lose!"
+
 end
 
 menu()
