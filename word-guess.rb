@@ -1,44 +1,133 @@
-class Word
+class Picture ()
+  def initialize ()
+    @picture = '
+    ,\,\,|,/,/,
+       _\|/_
+      |_____|
+       |   |
+       |___|
 
-  def initialize (letter,word)
-    @letter = letter
-    @word = word
+'
+    @array_roses = ['(@)','(@)','(@)','(@)','(@)','(@)']
+  end
+  #prints roses
+  def roses
+    @array_roses.each do |rose|
+      print rose
+    end
+  end
+  #deletes a single rose
+  def delete
+    @array_roses.pop
+  end
+  #prints flower pot
+  def flower_pot
+    print @picture
+  end
+  #returns rose array
+  def rose_reader
+    return @array_roses
   end
 
-  def compare_letter
-    # check if user character exits in word
-    # if word.split().include? letter
-      value = 0
-      @word.split('').each do |i|
-        if i == @letter
-          value = @word.split('').index(i)
-        end
-      end
-      return value
-  end
 
-#end of class
 end
 
-#
-# testr = Word.new('r','afraid')
-# print testr.compare_letter
+class Word
+  #attr_reader :random_word
+  def initialize(random_word)
+    @random_word = random_word
+  end
+
+  def split_word
+    split_word = @random_word.split('')
+    return split_word
+  end
+
+  def a_word
+    return @random_word
+  end
+end
 
 
+
+
+def compare_letter(user_letter,word,rose_pic,array_underlines)
+  # check if user character exitsd in word
+  word_index = []
+  count_letter_existance = 0
+  word.split_word.each do |letter|
+    if user_letter == letter
+      array_underlines[word.split_word.index(user_letter)] = user_letter
+    elsif !word.split_word.include?(user_letter)
+      count_letter_existance+=1
+    end
+
+    if count_letter_existance == word.split_word.length
+      puts "Wrong guess!"
+      rose_pic.delete
+    end
+
+  end
+
+  return array_underlines
+
+
+  #### FIRST DRAFT of Compare_letter Function! #####
+  # if word.split_word.include? letter
+  #   value = word.split_word.index(letter)
+  # else
+  #    value = false #& do something to pic
+  #    rose_pic.delete
+  #    #rose_pic.roses
+  #    #rose_pic.flower_pot
+  #    end
+  #  return value
+end
 
 def menu()
-random_words = ['cat','dog', 'bird']
-rand_word = random_words.sample
-rand_word.split('')
+  random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
+  rand_word = Word.new(random_words.sample)
+  @a_pic = Picture.new()
+  #print "#{rand_word.a_word}"
+  @a_pic.roses
+  @a_pic.flower_pot
+
   blank_array = []
-rand_word.split('').length.times do
-  blank_array << "_"
-end
-puts rand_word
-puts blank_array
+  rand_word.split_word.length.times do
+    blank_array << "_"
+  end
+  blank_array.each do |i|
+    print i
+  end
+
+  puts "\n\nGuess the word we have hinted!"
+  print "\nEnter a letter: "
+  user_letter = gets.chomp
+  ## replace the array of underline in compare
+
+  while @a_pic.rose_reader.length > 0
+    @a_pic.roses
+    @a_pic.flower_pot
+
+    # blank_array = []
+    # rand_word.split('').length.times do
+    #   blank_array << "_"
+    # end
+    # puts rand_word
+    ## put the picture here
+    # blank_array.each do |i|
+    #   print i
+    # end
+    # puts "\n\nGuess the word we have hinted above!"
+    print "\nEnter a letter: "
+    print "#{rand_word}"
+    user_letter = gets.chomp
+    print compare_letter(user_letter,rand_word,@a_pic,blank_array)
+
+
+    #end of while loop - array of roses
+
+  end
 end
 
-# print "Enter a letter "
-# user_letter = gets.chomp
-
-menu
+menu()
