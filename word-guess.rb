@@ -1,21 +1,22 @@
 #require 'Awesome_Print'
-
+require 'faker'
+require 'colorize'
 class Picture ()
   def initialize ()
     @picture = '
-    ,\,\,|,/,/,
+    ,\,\,|,/,/, '.light_green +
+    '
        _\|/_
       |_____|
        |   |
-       |___|
-
-'
+       |___| '
+     
     @array_roses = ['(@)','(@)','(@)','(@)','(@)','(@)']
   end
   #prints roses
   def roses
     @array_roses.each do |rose|
-      print rose
+      print rose.light_red
     end
   end
   #deletes a single rose
@@ -99,7 +100,7 @@ end
 def menu()
   winner = 999
   # random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
-  rand_word = Word.new("poop")
+  rand_word = Word.new(Faker::Pokemon.name.downcase)
   @a_pic = Picture.new()
   @a_pic.roses
   @a_pic.flower_pot
@@ -122,7 +123,6 @@ def menu()
     print "\nEnter a letter: "
     user_letter = gets.chomp.downcase
     puts ""
-    # until user_letter.length == 1 && user_guesses[user_letter]
     while user_guesses[user_letter]!= nil || user_letter.match(/^[a-z]{1}$/) == nil
       if user_guesses[user_letter] != nil
         puts "You've already guessed that! Guess again."
@@ -140,9 +140,9 @@ def menu()
     puts array_underlines
     #end of while loop - array of roses
     if winner == 0
-      puts "You win!"
+      puts "YOU WIN - you know your pokemon!".light_blue.on_light_green.blink
     elsif @a_pic.rose_reader.length == 0
-      puts "Sorry no more attempts, you lose!"
+      puts "Sorry no more attempts, you lose!".light_red.on_black
     end
   end
 
