@@ -97,8 +97,9 @@ def compare_letter(user_letter,word,rose_pic,array_underlines)
 end
 
 def menu()
-  random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
-  rand_word = Word.new(random_words.sample)
+  winner = 999
+  # random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
+  rand_word = Word.new("poop")
   @a_pic = Picture.new()
   @a_pic.roses
   @a_pic.flower_pot
@@ -116,22 +117,34 @@ def menu()
   # user_letter = gets.chomp
   ## replace the array of underline in compare
 
-  while @a_pic.rose_reader.length > 0
+  while @a_pic.rose_reader.length > 0 && winner > 0
     puts "#{rand_word.a_word}"
     print "\nEnter a letter: "
     user_letter = gets.chomp.downcase
-    while user_guesses[user_letter]!= nil
-      puts "You've already guessed that! Guess again."
-      user_letter = gets.chomp.downcase
+    puts ""
+    # until user_letter.length == 1 && user_guesses[user_letter]
+    while user_guesses[user_letter]!= nil || user_letter.match(/^[a-z]{1}$/) == nil
+      if user_guesses[user_letter] != nil
+        puts "You've already guessed that! Guess again."
+        user_letter = gets.chomp.downcase
+      elsif user_letter.match(/^[a-z]{1}$/) == nil
+        puts "Enter a single letter guess."
+        user_letter = gets.chomp.downcase
+      end
     end
     user_guesses[user_letter] = 'a_guess'
     array_underlines = compare_letter(user_letter,rand_word,@a_pic,blank_array)
+    winner = array_underlines.count('_')
     @a_pic.roses
     @a_pic.flower_pot
     puts array_underlines
     #end of while loop - array of roses
+    if winner == 0
+      puts "You win!"
+    elsif @a_pic.rose_reader.length == 0
+      puts "Sorry no more attempts, you lose!"
+    end
   end
-  puts "Sorry no more attempts, you lose!"
 
 end
 
