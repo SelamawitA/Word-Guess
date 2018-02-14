@@ -1,6 +1,7 @@
 #require 'Awesome_Print'
 require 'faker'
 require 'colorize'
+
 class Picture ()
   def initialize ()
     @picture = '
@@ -9,8 +10,9 @@ class Picture ()
        _\|/_
       |_____|
        |   |
-       |___| '
-     
+       |___|
+
+'
     @array_roses = ['(@)','(@)','(@)','(@)','(@)','(@)']
   end
   #prints roses
@@ -32,7 +34,6 @@ class Picture ()
     return @array_roses
   end
 
-
 end
 
 class Word
@@ -52,14 +53,10 @@ class Word
 end
 
 
-
-
 def compare_letter(user_letter,word,rose_pic,array_underlines)
   # check if user character exitsd in word
   word_index = []
   count_letter_existance = 0
-
-#  ap word.split_word
 
   word.split_word.each_with_index{|letter,index|
     if user_letter == letter
@@ -74,7 +71,7 @@ def compare_letter(user_letter,word,rose_pic,array_underlines)
 
     end
 }
-  #e
+
   display_word = ""
   array_underlines.each do |index|
     display_word+= " #{index}"
@@ -82,25 +79,35 @@ def compare_letter(user_letter,word,rose_pic,array_underlines)
 
   return display_word
 
-
-
-
-  #### FIRST DRAFT of Compare_letter Function! #####
-  # if word.split_word.include? letter
-  #   value = word.split_word.index(letter)
-  # else
-  #    value = false #& do something to pic
-  #    rose_pic.delete
-  #    #rose_pic.roses
-  #    #rose_pic.flower_pot
-  #    end
-  #  return value
 end
 
 def menu()
+  puts "Choose a difficulty--\n  -Easy: 5 letters or less\n -Medium: 8 letters or less\n -Hard: 9+ letters! "
+  user_difficulty = gets.chomp.downcase
+  difficulty_array = ["easy", "medium", "hard"]
+
+  until difficulty_array.include?(user_difficulty)
+    print "Choose Easy, Medium, or Hard: "
+    user_difficulty = gets.chomp.downcase
+  end
+
   winner = 999
-  # random_words = ['jazzed','dogged', 'puzzle', 'muzzle']
-  rand_word = Word.new(Faker::Pokemon.name.downcase)
+  random_word = Faker::Pokemon.name.downcase
+
+  if user_difficulty == "easy"
+    until random_word.length <= 5
+      random_word = Faker::Pokemon.name.downcase
+    end
+  elsif user_difficulty == "medium"
+    until random_word.length <= 8 && random_word.length > 5
+      random_word = Faker::Pokemon.name.downcase
+    end
+  elsif user_difficulty == "hard"
+    until random_word.length > 8
+      random_word = Faker::Pokemon.name.downcase
+    end
+  end
+  rand_word = Word.new(random_word)
   @a_pic = Picture.new()
   @a_pic.roses
   @a_pic.flower_pot
@@ -119,7 +126,7 @@ def menu()
   ## replace the array of underline in compare
 
   while @a_pic.rose_reader.length > 0 && winner > 0
-    puts "#{rand_word.a_word}"
+
     print "\nEnter a letter: "
     user_letter = gets.chomp.downcase
     puts ""
@@ -142,7 +149,8 @@ def menu()
     if winner == 0
       puts "YOU WIN - you know your pokemon!".light_blue.on_light_green.blink
     elsif @a_pic.rose_reader.length == 0
-      puts "Sorry no more attempts, you lose!".light_red.on_black
+      puts "Sorry no more attempts, you lose.".light_red.on_black
+      puts "The pokemon was ".light_red.on_black + "#{random_word.upcase}!".light_red.on_black.underline
     end
   end
 
